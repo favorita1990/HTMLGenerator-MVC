@@ -1,1 +1,1 @@
-This is HTML Generator created by me for the university. There is developer's guide and user's guide.
+This is HTML Generator created by me for the university. There is an administrator when startup the project. The name is founder@abv.bg and pass 12. The admin can change, remove and add users and the stuff of HTML Generator. Based on MVC 5. Used technology stuff Html, Css, JavaScript(jQuery), Ajax and Json.
