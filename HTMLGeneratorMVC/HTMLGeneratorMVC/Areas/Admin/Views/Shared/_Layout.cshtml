@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @Html.Partial("~/Views/Shared/Partials/Header.cshtml")
+    <meta http-equiv="refresh" content="960.0">
+    @RenderSection("head", false)
+</head>
+<body id="body">
+
+    @Html.Partial("~/Views/Shared/Partials/HeaderNavigation.cshtml")
+
+    <div id="wrapthem">
+
+        @Html.Partial("~/Views/Shared/Partials/ControlNavigation.cshtml")
+
+        <div class="content" id="content-id">
+            <div class="" id="mainbody">
+                <header>
+                    <h1>
+                        <a href="@Url.Action("Index", "Home")">HTML5 Generator</a>
+                    </h1>
+                </header>
+
+                @RenderBody()
+
+            </div>
+        </div>
+    </div>
+
+    @RenderSection("scripts", required: false)
+</body>
+
+
+</html>

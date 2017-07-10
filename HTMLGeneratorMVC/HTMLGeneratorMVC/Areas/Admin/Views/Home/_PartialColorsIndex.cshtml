@@ -1,0 +1,70 @@
+﻿<div id="colorTargetId">
+@using (Ajax.BeginForm("PartialColors", "Home", new AjaxOptions()
+{
+    HttpMethod = "POST",
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "colorTargetId"
+},
+                                            new { name = "ListsGenerator", id = "ListsGenerator" }))
+{
+    <div class="col-lg-6 panel panel-default" id="colorz">
+        <div class="panel-body">
+            <div style="color: green; font-weight: bold">
+                @TempData["style"]
+            </div>
+            <div style="color: red; font-weight: bold">
+                @TempData["count"]
+            </div><br />
+            <div class="row">
+                @{ int count = 0;}
+                @foreach (var item in ViewBag.MyListCount as List<int>)
+                {
+                    if ((item < 5) || (ViewBag.style != null))
+                    {
+                        count++;
+                        <div class="col-xs-6 col-sm-9 col-md-9"><button class="btn btn-info pull-right" onclick="return false;">Get the color</button></div>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                            <input type="submit" value="Save" class="btn btn-success pull-left" />
+                        </div>
+                        break;
+                    }
+                }
+                @if (count == 0)
+                {
+                <div class="col-xs-6 col-sm-9 col-md-9"><button class="btn btn-info pull-left" onclick="return false;">Get the color</button></div>
+                }
+
+                <br><br><br>
+                <p>Color:</p>
+                @if (ViewBag.Color != null)
+                {
+                <input type="text" id="color" name="color" value="@ViewBag.Color.String1">
+                }
+                else
+                {
+                <input type="text" id="color" name="color" value="#123456">
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5 panel panel-default" id="preview">
+        <div class="panel-body">
+            <fieldset>
+                <legend>Preview</legend>
+                <div id="displayResult">
+                </div>
+            </fieldset>
+        </div>
+    </div>
+}
+</div>
+@Scripts.Render("~/bundles/javascript")
+<script src="~/Scripts/colorpicker.js"></script>
+
+<script>
+    $("button").click(function () {
+        $("#color").select();
+    document.execCommand('copy');
+    alert("The Code was Copied!");
+    });
+</script>

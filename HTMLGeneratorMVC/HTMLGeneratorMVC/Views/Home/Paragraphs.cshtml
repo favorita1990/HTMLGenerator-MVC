@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Paragraphs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<form name="ParagraphGenerator" id="ParagraphGenerator">
+    <div class="col-lg-6 panel panel-default">
+        <div class="panel-body">
+            <fieldset>
+                <legend>Customize a paragraph</legend>
+                <p>Enter text on one or more lines:</p><br>
+                <textarea id="paragraphCode" name="ParagraphText" onkeyup="javascript:generateParagraph();">Hello, I'm a paragraph!</textarea>
+                <p>Style:</p><br>
+                <select name="ParagraphStyle" id="ParagraphStyle" onchange="javascript:generateParagraph();">
+                    <option value="p">p</option>
+                    <option value="pre">pre</option>
+                </select>
+            </fieldset>
+        </div>
+    </div>
+    <div class="col-lg-5 panel panel-default" id="preview">
+        <div class="panel-body">
+            <fieldset>
+                <legend>Preview</legend>
+                <div id="displayResult">
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="col-lg-11 panel panel-default">
+        <div class="panel-body">
+            <fieldset>
+                <legend><button id="copy-btn" onclick="return false;">Copy Code</button></legend>
+                <textarea class="paragraph-area" name="generatedCode" id="generatedCode" onclick="this.focus();this.select()"></textarea>
+            </fieldset>
+        </div>
+    </div>
+</form>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/javascript")
+<script>
+    document.getElementsByTagName('body').onload = generateParagraph();
+</script>
+<script>
+    $("button").click(function () {
+        $("#generatedCode").select();
+    document.execCommand('copy');
+    alert("The Code was Copied!");
+    });
+</script>

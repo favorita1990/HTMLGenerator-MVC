@@ -1,0 +1,46 @@
+﻿@model IPagedList<HTMLGeneratorMVC.Models.Style>
+@using PagedList;
+
+@{
+    ViewBag.Title = "Category";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/css/autocomplete")
+
+
+
+@Html.Partial("_PartialIndex")
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/jqueryunob")
+@Scripts.Render("~/bundles/javascript")
+@Scripts.Render("~/js/autocomplete")
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#searchBy").autocomplete({
+            source: '@Url.Action("GetTitleAndCategory")'
+        });
+    });
+
+    function DeleteAllCheckBoxes(obj) {
+        var c = new Array();
+        c = document.getElementsByClassName('deleteAll');
+        for (var i = 0; i < c.length; i++) {
+            if (c[i].type == 'checkbox') {
+                c[i].checked = obj.checked;
+            }
+        }
+    }
+
+    $('input[id="checkboxId"]').change(function () {
+        var submitBtn = $('#checkBtnId');
+        if ($('input[id="checkboxId"]:checked').length > 0) {
+            submitBtn.show();
+            return true;
+        } else {
+            submitBtn.hide();
+        }
+    });
+</script>

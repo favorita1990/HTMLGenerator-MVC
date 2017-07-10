@@ -1,0 +1,119 @@
+﻿
+<div id="tableTargetId">
+    @using (Ajax.BeginForm("PartialTables", "Home", new AjaxOptions()
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "tableTargetId"
+    },
+                               new { name = "CodeGenerator", id = "CodeGenerator" }))
+    {
+    <div class="col-lg-6 panel panel-default">
+        <div class="panel-body">
+            <div style="color: green; font-weight: bold">
+            @TempData["style"]
+        </div>
+        <div style="color: red; font-weight: bold">
+            @TempData["count"]
+        </div><br />
+            <fieldset>
+                <legend>Customize a table</legend>
+                <p>Rows:</p><br>
+                @if (ViewBag.Table != null)
+                {
+                <input type="text" name="RowCount" value="@ViewBag.Table.String1" maxlength="2" onkeyup="javascript:generateTable();">
+                }
+                else
+                {
+                <input type="text" name="RowCount" value="6" maxlength="2" onkeyup="javascript:generateTable();">
+                }
+                <p>Columns:</p><br>
+                @if (ViewBag.Table != null)
+                {
+                <input type="text" name="ColumnCount" value="@ViewBag.Table.String2" maxlength="2" onkeyup="javascript:generateTable();">
+                }
+                else
+                {
+                <input type="text" name="ColumnCount" value="6" maxlength="2" onkeyup="javascript:generateTable();">
+                }
+                <p>Sample Text:</p><br>
+                <select name="DisplaySampleText" id="DisplaySampleText" onchange="javascript:generateTable();">
+                    @foreach (var item in ViewBag.DisplaySampleText)
+                    {
+                        if (ViewBag.Table != null)
+                        {
+                        <option value="@item.Value" @(item.Value == ViewBag.Table.String3 ? "selected='selected'" : "")>@item.Text</option>
+                        }
+                        else
+                        {
+                        <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+                <p>Border Style:</p><br>
+                <select name="BorderStyle" id="BorderStyle" onchange="javascript:generateTable();">
+                    @foreach (var item in ViewBag.BorderStyle)
+                    {
+                        if (ViewBag.Table != null)
+                        {
+                        <option value="@item.Value" @(item.Value == ViewBag.Table.String4 ? "selected='selected'" : "")>@item.Text</option>
+                        }
+                        else
+                        {
+                        <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+            </fieldset>
+        </div>
+    </div>
+    <div class="col-lg-5 panel panel-default" id="preview">
+        <div class="panel-body">
+            <fieldset>
+                <legend>Preview</legend>
+                <div id="displayResult">
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="col-lg-11 panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                @{ int count = 0;}
+                @foreach (var item in ViewBag.MyListCount as List<int>)
+                {
+                    if ((item < 5) || (ViewBag.style != null))
+                    {
+                        count++;
+                        <div class="col-xs-6 col-sm-9 col-md-9"><button class="btn btn-info pull-right" onclick="return false;">Copy Code</button></div>
+                        <div class="col-xs-6 col-sm-3 col-md-2 col-lg-3">
+                            <input type="submit" value="Save" class="btn btn-success pull-left" />
+                        </div>
+                        break;
+                    }
+
+                }
+                @if (count == 0)
+                {
+                <div class="col-xs-6 col-sm-9 col-md-9"><button class="btn btn-info pull-left" onclick="return false;">Copy Code</button></div>
+                }
+                <br /><br />
+                <textarea name="generatedCode" id="generatedCode" onclick="this.focus();this.select()"></textarea>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+
+
+@Scripts.Render("~/bundles/javascript")
+<script>
+    document.getElementsByTagName('body').onload = generateTable();
+</script>
+<script>
+    $("button").click(function () {
+        $("#generatedCode").select();
+    document.execCommand('copy');
+    alert("The Code was Copied!");
+    });
+</script>

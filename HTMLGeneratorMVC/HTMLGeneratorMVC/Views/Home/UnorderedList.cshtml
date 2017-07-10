@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "Unordered Lists";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<form name="ListsGenerator" id="ListsGenerator">
+    <div class="col-lg-6 panel panel-default">
+        <div class="panel-body">
+            <fieldset>
+                <legend>Customize an unordered list</legend>
+                <p>List Text:</p><br>
+                <input type="text" name="ListText" value="List Item" onkeyup="javascript:generateList();">
+                <p>Unordered List Style Type:</p><br>
+                <select name="UlstyleType" id="UlstyleType" onchange="javascript:generateList();">
+                    <option value="disk">disc</option>
+                    <option value="circle">circle</option>
+                    <option value="square">square</option>
+                    <option value="none">none</option>
+                </select>
+            </fieldset>
+        </div>
+    </div>
+    <div class="col-lg-5 panel panel-default" id="preview">
+        <div class="panel-body">
+            <fieldset>
+                <legend>Preview</legend>
+                <div id="displayResult">
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="col-lg-11 panel panel-default">
+        <div class="panel-body">
+            <fieldset>
+                <legend><button id="copy-btn" onclick="return false;">Copy Code</button></legend>
+                <textarea name="generatedCode" id="generatedCode"></textarea>
+            </fieldset>
+        </div>
+    </div>
+</form>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/javascript")
+<script>
+    document.getElementsByTagName('body').onload = generateList();
+</script>
+<script>
+    $("button").click(function () {
+        $("#generatedCode").select();
+    document.execCommand('copy');
+    alert("The Code was Copied!");
+    });
+</script>

@@ -1,0 +1,139 @@
+﻿
+<div id="styleTargetId">
+    @using (Ajax.BeginForm("PartialStyles", "Home", new AjaxOptions()
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "styleTargetId"
+    },
+       new { name = "StylesGenerator", id = "StylesGenerator" }))
+    {
+    <div class="col-lg-6 panel panel-default">
+        <div class="panel-body">
+            <div style="color: green; font-weight: bold">
+                @TempData["style"]
+            </div>
+            <div style="color: red; font-weight: bold">
+                @TempData["count"]
+            </div><br />
+            <fieldset>
+                <legend>Styles</legend>
+                <p>Div color:</p><br>
+                <select name="PickBodyColor" id="PickBodyColor" onchange="javascript:generateStyle();">
+                    @foreach (var item in ViewBag.PickBodyColor)
+                    {
+                        if (ViewBag.Style != null)
+                        {
+                            <option value="@item.Value" @(item.Value == ViewBag.Style.String1 ? "selected='selected'" : "")>@item.Text</option>
+                        }
+                        else
+                        {
+                        <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+                <p>Body text size:</p><br>
+                <select name="PickBodyTextSize" id="PickBodyTextSize" onchange="javascript:generateStyle();">
+                    @foreach (var item in ViewBag.PickBodyTextSize)
+                    {
+                        if (ViewBag.Style != null)
+                        {
+                        <option value="@item.Value" @(item.Value == ViewBag.Style.String2 ? "selected='selected'" : "")>@item.Text</option>
+                        }
+                        else
+                        {
+                        <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+                <p>Heading text:</p><br>
+                @if (ViewBag.Style != null)
+                {
+                <input type="text" name="HeadingText" value="@ViewBag.Style.String3" onkeyup="javascript:generateStyle();">
+                }
+                else
+                {
+                <input type="text" name="HeadingText" value="Some Span Text" onkeyup="javascript:generateStyle();">
+                }
+                <p>Heading text color:</p><br>
+                <select name="HeadingTextColor" id="HeadingTextColor" onchange="javascript:generateStyle();">
+                    @foreach (var item in ViewBag.HeadingTextColor)
+                    {
+                        if (ViewBag.Style != null)
+                        {
+                        <option value="@item.Value" @(item.Value == ViewBag.Style.String4 ? "selected='selected'" : "")>@item.Text</option>
+                        }
+                        else
+                        {
+                        <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+                <p>Paraprah text:</p><br>
+                @if (ViewBag.Style != null)
+                {
+                <input type="text" name="ParagraphText" value="@ViewBag.Style.String5" onkeyup="javascript:generateStyle();">
+                }
+                else
+                {
+                <input type="text" name="ParagraphText" value="Some Paragraph Text" onkeyup="javascript:generateStyle();">
+                }
+                <p>Paragraph text color:</p><br>
+                <select name="ParagraphTextColor" id="ParagraphTextColor" onchange="javascript:generateStyle();">
+                    @foreach (var item in ViewBag.ParagraphTextColor)
+                    {
+                        if (ViewBag.Style != null)
+                        {
+                        <option value="@item.Value" @(item.Value == ViewBag.Style.String6 ? "selected='selected'" : "")>@item.Text</option>
+                        }
+                        else
+                        {
+                        <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+            </fieldset>
+        </div>
+    </div>
+    <div class="col-lg-5 panel panel-default" id="preview">
+        <div class="panel-body">
+            <fieldset>
+                <legend>Preview</legend>
+                <div id="displayResult">
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="col-lg-5 panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                @if ((ViewBag.CountStyles < 5) || (ViewBag.style != null))
+                {
+                <div class="col-xs-6 col-sm-9 col-md-9"><button class="btn btn-info pull-right" onclick="return false;">Copy Code</button></div>
+                <div class="col-xs-6 col-sm-3 col-md-3">
+                    <input type="submit" value="Save" class="btn btn-success pull-left" />
+                </div>
+                }
+                else
+                {
+                <div class="col-xs-6 col-sm-9 col-md-9"><button class="btn btn-info pull-left" onclick="return false;">Copy Code</button></div>
+                }
+                <br /><br />
+                <textarea name="generatedCode" id="generatedCode"></textarea>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+
+@Scripts.Render("~/bundles/javascript")
+<script>
+    document.getElementsByTagName('body').onload = generateStyle();
+</script>
+<script>
+    $("button").click(function () {
+        $("#generatedCode").select();
+    document.execCommand('copy');
+    alert("The Code was Copied!");
+    });
+</script>
