@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Tables";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Scripts.Render("~/bundles/jqueryval")
+
+@Html.Partial("_PartialTablesIndex")
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/jqueryunob")
+@Scripts.Render("~/bundles/javascript")
+<script>
+    document.getElementsByTagName('body').onload = generateTable();
+</script>
+<script>
+    $("button").click(function () {
+        $("#generatedCode").select();
+    document.execCommand('copy');
+    alert("The Code was Copied!");
+    });
+</script>

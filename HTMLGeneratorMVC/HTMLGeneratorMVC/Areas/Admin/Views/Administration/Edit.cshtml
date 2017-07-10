@@ -1,0 +1,141 @@
+﻿@model HTMLGeneratorMVC.Models.UserModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/css/autocomplete")
+
+<div id="targetBackOrChangeId">
+    <div class="col-md-6 panel panel-default">
+        <div class="panel-body">
+            <script type="text/javascript">
+                document.title = 'Administration';
+                window.history.pushState(
+                    null,
+                    null,
+                    '/Admin/Administration/Edit/@Model.Id'
+                    );
+            </script>
+            @using (Ajax.BeginForm("Edit", "Administration", new AjaxOptions()
+            {
+                HttpMethod = "Post",
+                UpdateTargetId = "targetBackOrChangeId",
+                InsertionMode = InsertionMode.Replace
+            }, new { @class = "form-horizontal" }))
+            {
+            @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
+
+                <h3 class="text-center text-danger">Change Account.</h3>
+                <hr /><br />
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-3 control-label">Email*</div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        <span class="text-center text-danger">@TempData["emailValidation"]</span>
+                        <span class="text-center text-danger">@TempData["email"]</span>
+                    </div>
+                </div>
+                <br />
+
+                <div class="form-group">
+                    <div class="col-md-3 control-label">First Name*</div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                        <span class="text-center text-danger">@TempData["firstName"]</span>
+                    </div>
+                </div>
+                <br />
+
+                <div class="form-group">
+                    <div class="col-md-3 control-label">Last Name*</div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                        <span class="text-center text-danger">@TempData["lastName"]</span>
+                    </div>
+                </div>
+                <br />
+
+                <div class="form-group">
+                    <div class="col-md-3 control-label">Genter*</div>
+                    <div class="col-md-4">
+                        @if (TempData["genter"] != null)
+                        {
+                        <h2 class="text-center text-danger">@TempData["genter"]</h2>
+                        }
+                        <fieldset>
+                            <select name="genter" id="genter" class="form-control">
+                                <option value="1">Male</option>
+                                <option value="0">Female</option>
+                            </select>
+                        </fieldset>
+                    </div>
+                </div>
+                <br /><br />
+
+                <div class="form-group">
+                    <div class="col-md-3 control-label">Password*</div>
+                    <div class="col-md-8">
+                        @Html.PasswordFor(model => model.PasswordHash, new { @class = "form-control" })
+                        <span class="text-center text-danger">@TempData["password"]</span>
+                    </div>
+                </div>
+                <br />
+
+                <div class="row">
+                    <div class="col-xs-5 col-sm-3 col-md-3">
+                        <input type="submit" value="Save" class="btn btn-success" />
+                    </div>
+                    <div class="col-xs-6 col-sm-9 col-md-9">
+                        <button type="button" class="btn btn-warning pull-left">
+                            @Ajax.ActionLink("Back", "PartialIndex",
+                      new AjaxOptions
+                      {
+                          UpdateTargetId = "targetBackOrChangeId",
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get"
+                      })
+                        </button>
+                    </div>
+                </div>
+                <br />
+            }
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/jqueryunob")
+@Scripts.Render("~/bundles/javascript")
+@Scripts.Render("~/js/autocomplete")
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#searchBy").autocomplete({
+            source: '@Url.Action("GetTitleAndCategory")'
+        });
+    });
+
+    function DeleteAllCheckBoxes(obj) {
+        var c = new Array();
+        c = document.getElementsByClassName('deleteAll');
+        for (var i = 0; i < c.length; i++) {
+            if (c[i].type == 'checkbox') {
+                c[i].checked = obj.checked;
+            }
+        }
+    }
+
+    $('input[id="checkboxId"]').change(function () {
+        var submitBtn = $('#checkBtnId');
+        if ($('input[id="checkboxId"]:checked').length > 0) {
+            submitBtn.show();
+            return true;
+        } else {
+            submitBtn.hide();
+        }
+    });
+</script>

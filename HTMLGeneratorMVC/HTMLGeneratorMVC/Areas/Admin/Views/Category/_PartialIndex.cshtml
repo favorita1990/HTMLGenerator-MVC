@@ -1,0 +1,390 @@
+﻿@model IPagedList<HTMLGeneratorMVC.Models.Style>
+@using PagedList;
+@using PagedList.Mvc;
+
+<div id="targetPagedListId">
+    <div id="ajaxSearchDeleteId">
+        <div id="sortId">
+            <div id="targetDetailsId">
+                <script type="text/javascript">
+                    document.title = 'Category';
+                    window.history.pushState(
+                        null,
+                        null,
+                        '/Admin/Category'
+                        );
+                </script>
+                <div class="col-md-6 panel panel-default">
+                    <div class="panel-body">
+                        @if (ViewBag.Count == 0)
+            {
+            <h2 class="text-center text-danger">There is no saved category yet.</h2>
+                        }
+                        else
+                        {
+                        <div class="bg-info">
+                            <h2 class="text-center text-info">Categories</h2>
+                        </div>
+                        if (ViewBag.Message != "")
+                        {
+                        <hr />
+                        <div class="bg-warning">
+                            <h4 class="text-center text-danger">@ViewBag.Message</h4>
+                        </div>
+                            }
+
+                            <hr />
+                            using (Ajax.BeginForm("PartialIndex", "Category", new AjaxOptions()
+                {
+                    UpdateTargetId = "ajaxSearchDeleteId",
+                    InsertionMode = InsertionMode.Replace,
+                    HttpMethod = "Get"
+                }))
+                {
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="form-group has-feedback">
+                            <input type="text" value="" name="searchBy" id="searchBy" placeholder="Search" class="form-control" />
+                            <span class="glyphicon glyphicon-search pull-right form-control-feedback" style="color:#0c98cf"></span>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3">
+                        <input type="submit" value="Search" class="btn btn-info pull-left" />
+                    </div>
+                </div>
+                            }
+                            <hr />
+                            using (Ajax.BeginForm("DeleteStyles", "Category", new AjaxOptions()
+                            {
+                                HttpMethod = "POST",
+                                InsertionMode = InsertionMode.Replace,
+                                UpdateTargetId = "ajaxSearchDeleteId"
+                            }))
+                            {
+                            @Html.AntiForgeryToken()
+
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tr class="bg-info">
+                                            <th>
+                                                <input type="checkbox" class="deleteAll" id="checkboxId" name="checkboxId" onclick="DeleteAllCheckBoxes(this)" />
+                                                <div id="checkBtnId" style="display: none" class="text-center">
+                                                    <br />
+                                                    <button type="submit" title="Delete" style="color:dodgerblue; background-color:#d9edf7; border:none; padding:0;">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                @Ajax.ActionLink("Title(ASC/DESC)", "PartialIndex", new
+                                           {
+                                               sortBy = ViewBag.Title,
+                                               searchBy = Request.QueryString["searchBy"]
+                                           },
+                new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "GET", UpdateTargetId = "sortId" })
+                                            </th>
+                                            <th>
+                                                @Ajax.ActionLink("Category(ASC/DESC)", "PartialIndex", new
+                                           {
+                                               sortBy = ViewBag.Category,
+                                               searchBy = Request.QueryString["searchBy"]
+                                           },
+                new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "GET", UpdateTargetId = "sortId" })
+                                            </th>
+                                            <th>
+
+                                                @Ajax.ActionLink("Created Style", "PartialIndex", new
+                                           {
+                                               sortBy = ViewBag.Date,
+                                               searchBy = Request.QueryString["searchBy"]
+                                           },
+                new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "GET", UpdateTargetId = "sortId" })
+                                            </th>
+                                            <th>
+                                                Details
+                                            </th>
+                                        </tr>
+
+                                        @foreach (var item in Model)
+                                        {
+                                        <tr class="bg-warning">
+
+                                            <td>
+                                                <input class="deleteAll" type="checkbox" id="checkboxId" name="deleteInputs" value="@item.Id">
+                                            </td>
+                                            <td>
+                                                @if (item.Category == "Styles")
+                        {
+                        <a href="@Url.Action("Styles", "Home", new { id = item.Id })">@item.Title</a>
+                                                }
+                                                @if (item.Category == "Colors")
+                        {
+                        <a href="@Url.Action("Colors", "Home", new { id = item.Id })">@item.Title</a>
+                                                }
+                                                @if (item.Category == "Tables")
+                        {
+                        <a href="@Url.Action("Tables", "Home", new { id = item.Id })">@item.Title</a>
+                                                }
+                                                @if (item.Category == "Formatting")
+                        {
+                        <a href="@Url.Action("Formatting", "Home", new { id = item.Id })">@item.Title</a>
+                                                }
+                                                @if (item.Category == "Buttons")
+                        {
+                        <a href="@Url.Action("Buttons", "Home", new { id = item.Id })">@item.Title</a>
+                                                }
+                                                @if (item.Category == "Links")
+                        {
+                        <a href="@Url.Action("Links", "Home", new { id = item.Id })">@item.Title</a>
+                                                }
+                                                @if (item.Category == "Images")
+                        {
+                        <a href="@Url.Action("Images", "Home", new { id = item.Id })">@item.Title</a>
+                                                }
+                                                @if (item.Category == "Headings")
+                        {
+                        <a href="@Url.Action("Headings", "Home", new { id = item.Id })">@item.Title</a>
+                                                }
+                                                @if (item.Category == "Paragraphs")
+                        {
+                        <a href="@Url.Action("Paragraphs", "Home", new { id = item.Id })">@item.Title</a>
+                                                }
+                                                @if (item.Category == "UnorderedList")
+                        {
+                        <a href="@Url.Action("UnorderedList", "Home", new { id = item.Id })">@item.Title</a>
+                                                }
+                                                @if (item.Category == "OrderedList")
+                        {
+                        <a href="@Url.Action("OrderedList", "Home", new { id = item.Id })">@item.Title</a>
+                                                }
+                                                @if (item.Category == "Header")
+                        {
+                        <a href="@Url.Action("Header", "Home", new { id = item.Id })">@item.Title</a>
+                                                }
+                                                @if (item.Category == "Navigation")
+                        {
+                        <a href="@Url.Action("Navigation", "Home", new { id = item.Id })">@item.Title</a>
+                                                }
+                                                @if (item.Category == "Main")
+                        {
+                        <a href="@Url.Action("Main", "Home", new { id = item.Id })">@item.Title</a>
+                                                }
+                                                @if (item.Category == "Footer")
+                        {
+                        <a href="@Url.Action("Footer", "Home", new { id = item.Id })">@item.Title</a>
+                                                }
+                                            </td>
+
+                                            <td>
+                                                @item.Category
+                                            </td>
+                                            <td>
+                                                @item.Time
+                                            </td>
+                                            <td>
+                                                @if (item.Category == "Styles")
+                        {  @Ajax.ActionLink("Rename", "PartialRenameStyles", new { id = item.Id },
+                      new AjaxOptions
+                      {
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get",
+                          UpdateTargetId = "targetDetailsId"
+                      })
+                                                }
+
+                                                @if (item.Category == "Colors")
+                        {  @Ajax.ActionLink("Rename", "PartialRenameColors", new { id = item.Id },
+                      new AjaxOptions
+                      {
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get",
+                          UpdateTargetId = "targetDetailsId"
+                      })
+                                                }
+
+                                                @if (item.Category == "Tables")
+                        {  @Ajax.ActionLink("Rename", "PartialRenameTables", new { id = item.Id },
+                      new AjaxOptions
+                      {
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get",
+                          UpdateTargetId = "targetDetailsId"
+                      })
+                                                }
+
+                                                @if (item.Category == "Formatting")
+                        {  @Ajax.ActionLink("Rename", "PartialRenameFormatting", new { id = item.Id },
+                      new AjaxOptions
+                      {
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get",
+                          UpdateTargetId = "targetDetailsId"
+                      })
+                                                }
+
+                                                @if (item.Category == "Buttons")
+                        {  @Ajax.ActionLink("Rename", "PartialRenameButtons", new { id = item.Id },
+                      new AjaxOptions
+                      {
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get",
+                          UpdateTargetId = "targetDetailsId"
+                      })
+                                               }
+
+                                                @if (item.Category == "Links")
+                        {  @Ajax.ActionLink("Rename", "PartialRenameLinks", new { id = item.Id },
+                      new AjaxOptions
+                      {
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get",
+                          UpdateTargetId = "targetDetailsId"
+                      })
+                                               }
+
+                                                @if (item.Category == "Images")
+                        {  @Ajax.ActionLink("Rename", "PartialRenameImages", new { id = item.Id },
+                      new AjaxOptions
+                      {
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get",
+                          UpdateTargetId = "targetDetailsId"
+                      })
+                                                }
+
+                                                @if (item.Category == "Headings")
+                        {  @Ajax.ActionLink("Rename", "PartialRenameHeadings", new { id = item.Id },
+                      new AjaxOptions
+                      {
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get",
+                          UpdateTargetId = "targetDetailsId"
+                      })
+                                                }
+
+                                                @if (item.Category == "Paragraphs")
+                        {  @Ajax.ActionLink("Rename", "PartialRenameParagraphs", new { id = item.Id },
+                      new AjaxOptions
+                      {
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get",
+                          UpdateTargetId = "targetDetailsId"
+                      })
+                                                }
+
+
+                                                @if (item.Category == "UnorderedList")
+                        {  @Ajax.ActionLink("Rename", "PartialRenameUnorderedList", new { id = item.Id },
+                      new AjaxOptions
+                      {
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get",
+                          UpdateTargetId = "targetDetailsId"
+                      })
+                                                }
+
+                                                @if (item.Category == "OrderedList")
+                        {  @Ajax.ActionLink("Rename", "PartialRenameOrderedList", new { id = item.Id },
+                      new AjaxOptions
+                      {
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get",
+                          UpdateTargetId = "targetDetailsId"
+                      })
+                                                }
+
+                                                @if (item.Category == "Header")
+                        {  @Ajax.ActionLink("Rename", "PartialRenameHeader", new { id = item.Id },
+                      new AjaxOptions
+                      {
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get",
+                          UpdateTargetId = "targetDetailsId"
+                      })
+                                                }
+
+
+                                                @if (item.Category == "Navigation")
+                        {  @Ajax.ActionLink("Rename", "PartialRenameNavigation", new { id = item.Id },
+                      new AjaxOptions
+                      {
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get",
+                          UpdateTargetId = "targetDetailsId"
+                      })
+                                                }
+
+
+                                                @if (item.Category == "Main")
+                        {  @Ajax.ActionLink("Rename", "PartialRenameMain", new { id = item.Id },
+                      new AjaxOptions
+                      {
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get",
+                          UpdateTargetId = "targetDetailsId"
+                      })
+                                                }
+
+                                                @if (item.Category == "Footer")
+                        {  @Ajax.ActionLink("Rename", "PartialRenameFooter", new { id = item.Id },
+                      new AjaxOptions
+                      {
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get",
+                          UpdateTargetId = "targetDetailsId"
+                      })
+                                                }
+                                            </td>
+                                        </tr>
+                                        }
+                                    </table>
+                                    <strong>
+                                        @Html.PagedListPager(Model, page => Url.Action("PartialIndex", new
+                                   {
+                                       page,
+                                       searchBy = Request["searchBy"],
+                                       sortBy = Request["sortBy"]
+                                   }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(PagedListRenderOptions.Classic,
+        new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "Get",
+            UpdateTargetId = "targetPagedListId"
+        }))
+                                    </strong>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#searchBy").autocomplete({
+            source: '@Url.Action("GetTitleAndCategory")'
+        });
+    });
+
+    function DeleteAllCheckBoxes(obj) {
+        var c = new Array();
+        c = document.getElementsByClassName('deleteAll');
+        for (var i = 0; i < c.length; i++) {
+            if (c[i].type == 'checkbox') {
+                c[i].checked = obj.checked;
+            }
+        }
+    }
+
+    $('input[id="checkboxId"]').change(function () {
+        var submitBtn = $('#checkBtnId');
+        if ($('input[id="checkboxId"]:checked').length > 0) {
+            submitBtn.show();
+            return true;
+        } else {
+            submitBtn.hide();
+        }
+    });
+</script>

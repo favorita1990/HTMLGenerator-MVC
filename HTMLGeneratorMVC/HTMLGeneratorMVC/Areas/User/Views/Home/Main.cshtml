@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Layouts - Main";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@Html.Partial("_PartialMainIndex")
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/javascript")
+@Scripts.Render("~/bundles/jqueryunob")
+<script>
+    document.getElementsByTagName('body').onload = generateMain();
+</script>
+<script>
+    $("button").click(function () {
+        $("#generatedCode").select();
+    document.execCommand('copy');
+    alert("The Code was Copied!");
+    });
+</script>

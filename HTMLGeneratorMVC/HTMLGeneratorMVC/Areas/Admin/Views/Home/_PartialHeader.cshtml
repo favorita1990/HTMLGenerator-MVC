@@ -1,0 +1,72 @@
+﻿@model HTMLGeneratorMVC.Models.Style
+
+<div id="ajaxBackOrSaveId">
+    <div class="col-md-5 panel panel-default">
+        <div class="panel-body">
+            <h3 class="text-center text-danger">Are you sure you want to save this?</h3>
+            <div class="row">
+                <section id="loginForm">
+                   @using (Ajax.BeginForm("Header", "Home", new AjaxOptions()
+                   {
+                       UpdateTargetId = "ajaxBackOrSaveId",
+                       InsertionMode = InsertionMode.Replace,
+                       HttpMethod = "Post"
+                   },
+          new { @class = "form-horizontal" }))
+                   {
+                @Html.AntiForgeryToken()
+            <hr /><br />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 control-label">
+                                Enter Title:*
+                            </div>
+                            <div class="col-xs-7 col-sm-7 col-md-7">
+                                @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Title, "[Required]", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                       if (Session["backUserId"] == null)
+                       {
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 control-label">To User*</div>
+                            <div class="col-xs-10 col-sm-6 col-md-6">
+                                <fieldset>
+                                    <select name="user" id="user" class="form-control">
+                                       @foreach (var item in ViewBag.MyList as List<Tuple<int, string, int>>)
+                                       {
+                                           if (item.Item3 < 5)
+                                           {
+                                        <option value="@item.Item1">@item.Item2</option>
+                                           }
+                                       }
+                                    </select>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <br />
+                       }
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-3 col-md-3">
+                                <input type="submit" value="Save" class="btn btn-success" />
+                            </div>
+                            <div class="col-xs-6 col-sm-9 col-md-9">
+                                <button type="button" class="btn btn-warning pull-left">
+                                    @Ajax.ActionLink("Back", "PartialHeaderIndex",
+                      new AjaxOptions
+                      {
+                          UpdateTargetId = "ajaxBackOrSaveId",
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get"
+                      })
+                                </button>
+                            </div>
+                        </div>
+                    }
+                            
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

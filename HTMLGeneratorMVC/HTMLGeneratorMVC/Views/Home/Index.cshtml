@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        @if (ViewBag.Message == "User was removed.")
+        {
+        <h3 class="text-center text-success">@ViewBag.Message</h3>
+        }
+        else
+        {
+        <h3 class="text-center text-danger">@ViewBag.Message</h3>
+        }
+        <fieldset>
+
+            <legend>About:</legend>
+            <p>
+                The HTML5 Genarator is a project given to our team of 5 people.<br> The task is to create
+                a generator for users to simply customize html code and then copy it to their own site.
+            </p><br>
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th class="center">Creators:</th>
+                        <th class="center">Faculty Number:</th>
+                        <th class="center">E-mail:</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <th>1. Iliyan Kirilov Kodzhemanov</th>
+                    <td>F64419</td>
+                    <td class="mail">
+                        <a href="mailto:favorita1990@abv.bg">Mail</a>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+</div>
+@Scripts.Render("~/bundles/javascript")

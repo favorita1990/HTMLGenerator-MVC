@@ -1,0 +1,248 @@
+﻿@model IPagedList<HTMLGeneratorMVC.Models.UserModel>
+@using PagedList;
+@using PagedList.Mvc;
+
+
+<div id="targetPagedListId">
+    <div id="ajaxSearchDeleteId">
+        <div id="sortId">
+            <div id="targetCreateId">
+                <div id="ajaxSearchDeleteId">
+                    <script type="text/javascript">
+                        document.title = 'Administration';
+                        window.history.pushState(
+                            null,
+                            null,
+                            '/Admin/Administration'
+                            );
+                    </script>
+                    <div class="col-lg-11 panel panel-default">
+                        <div class="panel-body">
+
+
+                            @if (ViewBag.CountUsers == 0)
+            {
+            <h4>
+                <button type="button" class="btn btn-success">
+                    @Ajax.ActionLink("Add User", "PartialCreate",
+                      new AjaxOptions
+                      {
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get",
+                          UpdateTargetId = "targetCreateId"
+                      })
+                </button>
+            </h4>
+            <h2 class="text-center text-danger">There are no users yet.</h2>
+                            }
+                            else
+                            {
+
+                            <div class="bg-info">
+                                <h2 class="text-center text-info">Administration</h2>
+                            </div><hr>
+                                if (ViewBag.Message != "")
+                                {
+                                <div class="bg-warning">
+                                    <h4 class="text-center text-danger">@ViewBag.Message</h4>
+                                </div><br />
+                                }
+                              
+                                    using (Ajax.BeginForm("PartialIndex", "Administration", new AjaxOptions()
+                                    {
+                                        UpdateTargetId = "ajaxSearchDeleteId",
+                                        InsertionMode = InsertionMode.Replace,
+                                        HttpMethod = "Get"
+                                    }))
+                                    {
+                                    <div>
+                                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                            <div class="form-group has-feedback">
+                                                <input type="text" value="" name="searchBy" id="searchBy" placeholder="Search" class="form-control" />
+                                                <span class="glyphicon glyphicon-search pull-right form-control-feedback" style="color:#0c98cf"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3 col-md-2">
+                                            <input type="submit" value="Search" class="btn btn-info pull-left" />
+                                        </div>
+                                    </div>
+                                    }
+                                    <button type="button" class="btn btn-warning">
+                                        @Ajax.ActionLink("Add User", "PartialCreate",
+                      new AjaxOptions
+                      {
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get",
+                          UpdateTargetId = "targetCreateId"
+                      })
+                                    </button>
+                                <hr>
+
+                                using (Ajax.BeginForm("Delete", "Administration", new AjaxOptions()
+                                {
+                                    HttpMethod = "POST",
+                                    InsertionMode = InsertionMode.Replace,
+                                    UpdateTargetId = "ajaxSearchDeleteId"
+                                }))
+                                {
+                                @Html.AntiForgeryToken()
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <tr class="bg-info">
+                                                <th>
+                                                    <input type="checkbox" class="deleteAll" id="checkboxId" name="checkboxId" onclick="DeleteAllCheckBoxes(this)" />
+                                                    <div id="checkBtnId" style="display: none" class="text-center">
+                                                        <br />
+                                                        <button type="submit" title="Delete" style="color:dodgerblue; background-color:#d9edf7; border:none; padding:0;">
+                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                        </button>
+                                                    </div>
+                                                </th>
+
+                                                <th>
+                                                    @Ajax.ActionLink("First Name", "PartialIndex", new
+                                               {
+                                                   sortBy = ViewBag.FirstNameSortParm,
+                                                   searchBy = Request.QueryString["searchBy"]
+                                               },
+                new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "GET", UpdateTargetId = "sortId" })
+                                                </th>
+                                                <th>
+                                                    @Ajax.ActionLink("Last Name", "PartialIndex", new
+                                               {
+                                                   sortBy = ViewBag.LastNameSortParm,
+                                                   searchBy = Request.QueryString["searchBy"]
+                                               },
+                new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "GET", UpdateTargetId = "sortId" })
+                                                </th>
+                                                <th>
+                                                    @Ajax.ActionLink("Genter", "PartialIndex", new
+                                               {
+                                                   sortBy = ViewBag.GenterSort,
+                                                   searchBy = Request.QueryString["searchBy"]
+                                               },
+                new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "GET", UpdateTargetId = "sortId" })
+                                                </th>
+                                                <th>
+                                                    @Ajax.ActionLink("Created User", "PartialIndex", new
+                                               {
+                                                   sortBy = ViewBag.CreatedTimeSortParm,
+                                                   searchBy = Request.QueryString["searchBy"]
+                                               },
+                new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "GET", UpdateTargetId = "sortId" })
+                                                </th>
+                                                <th>
+                                                    @Ajax.ActionLink("Email", "PartialIndex", new
+                                               {
+                                                   sortBy = ViewBag.EmailSortParm,
+                                                   searchBy = Request.QueryString["searchBy"]
+                                               },
+                new AjaxOptions { InsertionMode = InsertionMode.Replace, HttpMethod = "GET", UpdateTargetId = "sortId" })
+                                                </th>
+                                                <th>
+                                                    Details
+                                                </th>
+                                            </tr>
+
+                                            @foreach (var item in Model)
+                                            {
+                                                if (item.Email != User.Identity.Name)
+                                                {
+                                                <tr class="bg-warning">
+                                                    <td>
+                                                        <input class="deleteAll" type="checkbox" id="checkboxId" name="deleteInputs" value="@item.Id">
+                                                    </td>
+
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.FirstName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.LastName)
+                                                    </td>
+                                                    <td>
+                                                        @if (item.Genter == "1")
+                            {
+                            <div>Male</div>
+                                                        }
+                                                        else
+                                                        {
+                                                        <div>Famale</div>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Time)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Email)
+                                                    </td>
+                                                    <td>
+                                                        @Ajax.ActionLink("Edit", "PartialEdit", new { id = item.Id },
+                                                    new AjaxOptions
+                                                    {
+                                                        InsertionMode = InsertionMode.Replace,
+                                                        HttpMethod = "GET",
+                                                        UpdateTargetId = "targetCreateId"
+                                                    }) |
+                                                        @Ajax.ActionLink("Details", "PartialDetails", new { id = item.Id },
+                                                    new AjaxOptions
+                                                    {
+                                                        InsertionMode = InsertionMode.Replace,
+                                                        HttpMethod = "GET",
+                                                        UpdateTargetId = "targetCreateId"
+                                                    })       
+                                                    </td>
+                                                </tr>
+                                                }
+                                            }
+                                        </table>
+                                        <strong>
+                                            @Html.PagedListPager(Model, page => Url.Action("PartialIndex", new
+                                       {
+                                           page,
+                                           searchBy = Request["searchBy"],
+                                           sortBy = Request["sortBy"]
+                                       }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(PagedListRenderOptions.Classic,
+        new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "Get",
+            UpdateTargetId = "targetPagedListId"
+        }))
+                                        </strong>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#searchBy").autocomplete({
+            source: '@Url.Action("GetUsersStuff")'
+        });
+    });
+
+    function DeleteAllCheckBoxes(obj) {
+        var c = new Array();
+        c = document.getElementsByClassName('deleteAll');
+        for (var i = 0; i < c.length; i++) {
+            if (c[i].type == 'checkbox') {
+                c[i].checked = obj.checked;
+            }
+        }
+    }
+
+    $('input[id="checkboxId"]').change(function () {
+        var submitBtn = $('#checkBtnId');
+        if ($('input[id="checkboxId"]:checked').length > 0) {
+            submitBtn.show();
+            return true;
+        } else {
+            submitBtn.hide();
+        }
+    });
+</script>

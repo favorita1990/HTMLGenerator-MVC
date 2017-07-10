@@ -1,0 +1,171 @@
+﻿@using HTMLGeneratorMVC.Context
+@{ 
+    GeneratorDb db = new GeneratorDb();
+    var user = db.Users.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+}
+
+<nav>
+    <ul class="sidenav" id="side">
+        <p>HTML5 Generator</p>
+        <li>
+            @if (Request.IsAuthenticated)
+            {
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Index") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Manage") ? "class=active" : "") href="@Url.Action("Index", "Manage")">
+                @if (User.IsInRole("Admin"))
+                {
+                <div>
+                    Admin @user.FirstName!
+                </div>
+                }
+                else
+                {
+                <div>
+                    Hello @user.FirstName!
+                </div>
+                }
+            </a>
+            }
+            else
+            {
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Register") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Account") ? "class=active" : "") href="@Url.Action("Register", "Account")">
+                Sign Up
+            </a>
+            }
+        </li>
+        <li>
+            @if (Request.IsAuthenticated)
+            {
+                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                {
+                @Html.AntiForgeryToken()
+
+                    <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                }
+            }
+            else
+            {
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Login") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Account") ? "class=active" : "") href="@Url.Action("Login", "Account")">
+                Sign In
+            </a>
+            }
+        </li>
+        @if (Request.IsAuthenticated)
+            {
+            <li>
+                <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Index") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Category") ? "class=active" : "") href="@Url.Action("Index", "Category")">
+                    Saved Categories
+                </a>
+            </li>
+            if (User.IsInRole("Admin"))
+                {
+                <li>
+                    <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Index") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Administration") ? "class=active" : "") href="@Url.Action("Index", "Administration")">
+                        Administration
+                    </a>
+                </li>
+            }
+        }
+        <hr>
+        <li>
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Styles") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Home") ? "class=active" : "")
+               href="@Url.Action("Styles", "Home", new { id = "" })">
+                HTML Styles
+            </a>
+        </li>
+        <li>
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Colors") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Home") ? "class=active" : "")
+               href="@Url.Action("Colors", "Home", new { id = "" })">
+                HTML Colors
+            </a>
+        </li>
+        <li>
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Tables") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Home") ? "class=active" : "")
+               href="@Url.Action("Tables", "Home", new { id = "" })">
+                HTML Tables
+            </a>
+        </li>
+        <li>
+            <p class="list">HTML Inline</p>
+        </li>
+        <li>
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Formatting") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Home") ? "class=active" : "")
+               href="@Url.Action("Formatting", "Home", new { id = "" })">
+                HTML Formatting
+            </a>
+        </li>
+        <li>
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Buttons") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Home") ? "class=active" : "")
+               href="@Url.Action("Buttons", "Home", new { id = "" })">
+                HTML Buttons
+            </a>
+        </li>
+        <li>
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Links") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Home") ? "class=active" : "")
+               href="@Url.Action("Links", "Home", new { id = "" })">
+                HTML Links
+            </a>
+        </li>
+        <li>
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Images") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Home") ? "class=active" : "")
+               href="@Url.Action("Images", "Home", new { id = "" })">
+                HTML Images
+            </a>
+        </li>
+        <li>
+            <p class="list">HTML Blocks</p>
+        </li>
+        <li>
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Headings") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Home") ? "class=active" : "")
+               href="@Url.Action("Headings", "Home", new { id = "" })">
+                HTML Headings
+            </a>
+        </li>
+        <li>
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Paragraphs") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Home") ? "class=active" : "")
+               href="@Url.Action("Paragraphs", "Home", new { id = "" })">
+                HTML Paragraphs
+            </a>
+        </li>
+        <li>
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("UnorderedList") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Home") ? "class=active" : "")
+               href="@Url.Action("UnorderedList", "Home", new { id = "" })">
+                HTML Unordered List
+            </a>
+        </li>
+        <li>
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("OrderedList") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Home") ? "class=active" : "")
+               href="@Url.Action("OrderedList", "Home", new { id = "" })">
+                HTML Ordered List
+            </a>
+        </li>
+        <li>
+            <p class="list">HTML Layouts</p>
+        </li>
+        <li>
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Header") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Home") ? "class=active" : "")
+               href="@Url.Action("Header", "Home", new { id = "" })">
+                Header
+            </a>
+        </li>
+        <li>
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Navigation") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Home") ? "class=active" : "")
+               href="@Url.Action("Navigation", "Home", new { id = "" })">
+                Navigation
+            </a>
+        </li>
+        <li>
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Main") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Home") ? "class=active" : "")
+               href="@Url.Action("Main", "Home", new { id = "" })">
+                Main
+            </a>
+        </li>
+        <li>
+            <a @(ViewContext.RouteData.Values["Action"].ToString().Equals("Footer") && ViewContext.RouteData.Values["Controller"].ToString().Equals("Home") ? "class=active" : "")
+               href="@Url.Action("Footer", "Home", new { id = "" })">
+                Footer
+            </a>
+        </li>
+        <br>
+    </ul>
+
+</nav>

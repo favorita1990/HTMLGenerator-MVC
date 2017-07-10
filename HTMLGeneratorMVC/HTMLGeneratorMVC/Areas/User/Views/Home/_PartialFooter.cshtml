@@ -1,0 +1,51 @@
+﻿@model HTMLGeneratorMVC.Models.Style
+
+<div id="ajaxBackOrSaveId">
+    <div class="col-md-5 panel panel-default">
+        <div class="panel-body">
+            <h3 class="text-center text-danger">Are you sure you want to save this?</h3>
+            <div class="row">
+                <section id="loginForm">
+                    @using (Ajax.BeginForm("Footer", "Home", new AjaxOptions()
+                    {
+                        UpdateTargetId = "ajaxBackOrSaveId",
+                        InsertionMode = InsertionMode.Replace,
+                        HttpMethod = "Post"
+                    },
+        new { @class = "form-horizontal" }))
+                    {
+                    @Html.AntiForgeryToken()
+            <hr /><br />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <div class="col-sm-4 col-md-4 control-label">
+                                Enter Title:*
+                            </div>
+                            <div class="col-xs-7 col-sm-7 col-md-7">
+                                @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+                                @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-3 col-md-3">
+                                <input type="submit" value="Save" class="btn btn-success" />
+                            </div>
+                            <div class="col-xs-6 col-sm-9 col-md-9">
+                                <button type="button" class="btn btn-warning pull-left">
+                                    @Ajax.ActionLink("Back", "PartialFooterIndex",
+                      new AjaxOptions
+                      {
+                          UpdateTargetId = "ajaxBackOrSaveId",
+                          InsertionMode = InsertionMode.Replace,
+                          HttpMethod = "Get"
+                      })
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
